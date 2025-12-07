@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas English Game for Mengmeng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B98',
+                        secondary: '#5ECEF4',
+                        accent: '#FFD166',
+                        success: '#06D6A0',
+                        warning: '#FFD166',
+                        danger: '#EF476F',
+                        light: '#F8F9FA',
+                        dark: '#212529',
+                        christmas: {
+                            green: '#2ECC71',
+                            red: '#E74C3C',
+                            gold: '#F1C40F',
+                            blue: '#3498DB'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'fade-out': 'fade-out 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'fade-out': {
+                            '0%': { opacity: 1 },
+                            '100%': { opacity: 0 }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .text-shadow-lg {
+                text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            }
+            .btn-bounce:active {
+                transform: scale(0.95);
+            }
+            .draggable {
+                cursor: grab;
+                user-select: none;
+                touch-action: none;
+            }
+            .draggable:active {
+                cursor: grabbing;
+            }
+            .typewriter {
+                overflow: hidden;
+                border-right: 0.15em solid #FF6B98;
+                white-space: nowrap;
+                margin: 0 auto;
+                letter-spacing: 0.15em;
+                animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            }
+            @keyframes typing {
+                from { width: 0 }
+                to { width: 100% }
+            }
+            @keyframes blink-caret {
+                from, to { border-color: transparent }
+                50% { border-color: #FF6B98 }
+            }
+        }
+    </style>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #F8F9FA;
+            overflow-x: hidden;
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .draggable {
+            user-select: none;
+        }
+        
+        .decorated-item {
+            position: absolute;
+            cursor: move;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 10;
+        }
+        
+        .decorated-item:hover {
+            transform: scale(1.1);
+            z-index: 100;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .decorated-item.dragging {
+            transform: scale(1.2);
+            z-index: 200;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .word-option {
+            transition: all 0.2s ease;
+        }
+        
+        .word-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .word-option.correct {
+            background-color: #06D6A0;
+            color: white;
+        }
+        
+        .word-option.incorrect {
+            background-color: #EF476F;
+            color: white;
+        }
+        
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #FF6B98;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF6B98 }
+        }
+        
+        .bounce-in {
+            animation: bounce-in 1s;
+        }
+        
+        @keyframes bounce-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .fade-in {
+            animation: fade-in 1s;
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* 装饰品库样式 */
+        .decoration-library-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .decoration-library-item:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        .decoration-library-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            box-shadow: 0 0 0 2px #FF6B98;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .decoration-library-item:hover::after {
+            opacity: 1;
+        }
+        
+        /* 圣诞树区域样式 */
+        .tree-drop-zone {
+            position: relative;
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .tree-drop-zone.drag-over {
+            background: rgba(94, 206, 244, 0.2);
+            box-shadow: inset 0 0 0 3px #5ECEF4;
+        }
+        
+        /* 装饰品动画 */
+        @keyframes drop-bounce {
+            0% {
+                transform: scale(0.5) translateY(-50px);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.1) translateY(0);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .drop-animation {
+            animation: drop-bounce 0.5s ease-out forwards;
+        }
+        
+        /* 撤销按钮样式 */
+        .revert-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .revert-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .revert-btn:disabled:hover {
+            transform: none;
+        }
+        
+        /* 装饰品数量标签 */
+        .decoration-count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #EF476F;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* 学习进度样式 */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #2ECC71;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .mastered-badge {
+            background-color: #2ECC71 !important;
+            color: white !important;
+        }
+        
+        /* 开场动画倒计时样式 */
+        .countdown-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #E74C3C;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            z-index: 100;
+        }
+        
+        /* 跳过按钮样式 */
+        .skip-btn {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #3498DB;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+        
+        .skip-btn:hover {
+            background: white;
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+        
+        .skip-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page -->
+    <div id="main-page" class="page active bg-gradient-to-b from-pink-100 to-blue-100">
+        <div id="welcome-animation" class="flex flex-col items-center justify-center h-screen">
+            <!-- 小女孩图片 -->
+            <div class="relative">
+                <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/e5dfc44187f14277b1630b4787667334~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691092&x-signature=yk7o9kJdJLzOUBNk%2B1seP8fg6MA%3D" 
+                     alt="Girl" 
+                     class="w-48 h-48 mb-8 animate-float">
+                
+                <!-- 漂浮的圣诞元素装饰 -->
+                <div class="absolute -top-4 -right-4 w-12 h-12 animate-wiggle">
+                    <i class="fa fa-star text-christmas-gold text-3xl"></i>
+                </div>
+                <div class="absolute -bottom-4 -left-4 w-10 h-10 animate-wiggle" style="animation-delay: 0.5s;">
+                    <i class="fa fa-gift text-christmas-red text-2xl"></i>
+                </div>
+                <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-8 h-8 animate-wiggle" style="animation-delay: 1s;">
+                    <i class="fa fa-snowflake text-christmas-blue text-xl"></i>
+                </div>
+            </div>
+            
+            <!-- 对话气泡 -->
+            <div class="bubble bg-white rounded-2xl p-6 max-w-md mx-auto shadow-lg relative mb-4">
+                <div class="text-center">
+                    <p id="typewriter-text" class="text-lg md:text-xl lg:text-2xl font-bold text-christmas-red mb-0">
+                        Christmas is coming soon! I want to get a beautiful Christmas tree!
+                    </p>
+                </div>
+                <!-- 气泡箭头 -->
+                <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
+                    <div class="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[15px] border-l-transparent border-r-transparent border-t-white"></div>
+                </div>
+            </div>
+            
+            <!-- 倒计时圆圈 -->
+            <div id="countdown-circle" class="countdown-circle">
+                <span id="countdown-number">10</span>
+            </div>
+            
+            <!-- 跳过按钮 -->
+            <button id="skip-intro-btn" class="skip-btn">
+                <i class="fa fa-forward mr-2"></i> Skip Intro
+            </button>
+            
+            <!-- 进度条 -->
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-64">
+                <div class="h-2 bg-white bg-opacity-30 rounded-full overflow-hidden">
+                    <div id="intro-progress-bar" class="h-full bg-christmas-red rounded-full" style="width: 0%"></div>
+                </div>
+                <p class="text-center text-white text-sm mt-2 text-shadow">Loading Christmas magic...</p>
+            </div>
+        </div>
+        
+        <div id="main-content" class="hidden flex flex-col items-center justify-center h-screen p-4">
+            <div class="absolute inset-0 z-0 opacity-20">
+                <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/8c04c0413d854c87ad2802f068f978ba~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691119&x-signature=3u%2Bkw8wJC6IFludRFvNTDbpRUHQ%3D" 
+                     alt="Background" 
+                     class="w-full h-full object-cover">
+            </div>
+            
+            <div class="relative z-10 text-center mb-12 animate-fade-in">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-christmas-red mb-4 text-shadow-lg">
+                    Hello Mengmeng, Let's decorate the Christmas tree together!
+                </h1>
+                <p class="text-lg text-christmas-green font-semibold">
+                    Learn English words to get Christmas decorations!
+                </p>
+            </div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row justify-center items-center gap-6 w-full max-w-2xl animate-fade-in" style="animation-delay: 0.3s;">
+                <button id="learn-words-btn" 
+                        class="btn bg-christmas-blue hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg btn-bounce">
+                    <i class="fa fa-graduation-cap mr-2"></i> Learn Words
+                </button>
+                
+                <button id="decorate-tree-btn" 
+                        class="btn bg-christmas-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg btn-bounce">
+                    <i class="fa fa-tree mr-2"></i> Decorate Tree
+                </button>
+            </div>
+            
+            <div class="relative z-10 mt-8 text-center animate-fade-in" style="animation-delay: 0.6s;">
+                <div class="inline-flex items-center bg-white rounded-full px-4 py-2 shadow-md">
+                    <div class="w-8 h-8 rounded-full bg-christmas-gold flex items-center justify-center text-white font-bold mr-2">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <span class="text-lg font-bold text-christmas-red">Score: <span id="main-score-display">0</span></span>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Mastered words: <span id="mastered-count">0</span>/<span id="total-words">18</span></p>
+            </div>
+            
+            <button id="restart-btn" 
+                    class="absolute top-4 right-4 btn bg-christmas-red hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md btn-bounce animate-fade-in" style="animation-delay: 0.9s;">
+                <i class="fa fa-refresh mr-2"></i> Restart Game
+            </button>
+        </div>
+    </div>
+    
+    <!-- Word Learning Page -->
+    <div id="word-learning-page" class="page bg-gradient-to-b from-blue-100 to-purple-100 p-4">
+        <div class="flex justify-between items-center mb-6">
+            <button id="back-to-main-btn" 
+                    class="btn bg-christmas-red hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md btn-bounce">
+                <i class="fa fa-arrow-left mr-2"></i> Back
+            </button>
+            
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-christmas-gold flex items-center justify-center text-white font-bold mr-2">
+                    <i class="fa fa-star"></i>
+                </div>
+                <span id="score-display" class="text-xl font-bold text-christmas-red">0</span>
+            </div>
+        </div>
+        
+        <div class="mb-6 bg-white rounded-2xl shadow-xl p-4">
+            <h3 class="text-lg font-bold text-christmas-green mb-2">Learning Progress</h3>
+            <div class="flex flex-wrap gap-2 mb-2">
+                <div class="text-sm">
+                    <span class="font-semibold">To learn:</span> <span id="words-to-learn-count">18</span> words
+                </div>
+                <div class="text-sm">
+                    <span class="font-semibold">Mastered:</span> <span id="words-mastered-count">0</span> words
+                </div>
+            </div>
+            <div class="progress-container">
+                <div id="learning-progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
+            <div id="word-card" class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mb-8 transform transition-all duration-300">
+                <div class="flex flex-col items-center">
+                    <div id="current-image" class="w-48 h-48 mb-6 flex items-center justify-center">
+                        <!-- Word image will be inserted here -->
+                    </div>
+                    
+                    <div class="flex items-center mb-4">
+                        <div id="word-audio-btn" class="bg-christmas-blue hover:bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4 cursor-pointer">
+                            <i class="fa fa-volume-up text-xl"></i>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            Click to hear the word
+                        </div>
+                    </div>
+                    
+                    <div id="word-options" class="w-full grid grid-cols-2 gap-4">
+                        <!-- Word options will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="all-mastered-message" class="hidden bg-white rounded-2xl shadow-xl p-6 w-full max-w-md text-center">
+                <div class="text-5xl mb-4">🎉🎄</div>
+                <h3 class="text-2xl font-bold text-christmas-green mb-2">Congratulations!</h3>
+                <p class="text-lg mb-4">You have mastered all Christmas words!</p>
+                <p class="text-sm text-gray-600 mb-6">You can now decorate your tree with all the decorations you've earned.</p>
+                <button id="go-to-decorate-btn" class="bg-christmas-green hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full mb-3">
+                    <i class="fa fa-tree mr-2"></i> Decorate Tree
+                </button>
+                <button id="review-words-btn" class="bg-christmas-blue hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-full">
+                    <i class="fa fa-repeat mr-2"></i> Review All Words
+                </button>
+            </div>
+            
+            <div id="success-message" class="hidden bg-white rounded-2xl shadow-xl p-6 w-full max-w-md text-center">
+                <div class="text-5xl mb-4">🎉</div>
+                <h3 class="text-2xl font-bold text-christmas-green mb-2">Congratulations!</h3>
+                <p class="text-lg mb-4">You earned <span id="earned-item-name" class="font-bold text-christmas-red"></span> decorations!</p>
+                <img id="earned-item-image" class="w-24 h-24 mx-auto mb-6" src="" alt="">
+                <p class="text-sm text-gray-600 mb-4">You got 2 <span id="earned-item-count"></span> decorations for your tree!</p>
+                <button id="continue-btn" class="bg-christmas-green hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full">
+                    Keep Learning
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Christmas Tree Decoration Page -->
+    <div id="tree-decoration-page" class="page bg-gradient-to-b from-green-100 to-blue-100 p-4">
+        <div class="flex justify-between items-center mb-4">
+            <button id="back-to-main-from-tree-btn" 
+                    class="btn bg-christmas-red hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md btn-bounce">
+                <i class="fa fa-arrow-left mr-2"></i> Back
+            </button>
+            
+            <div class="flex items-center gap-4">
+                <div class="text-christmas-green font-bold">
+                    Placed: <span id="decorations-count">0</span> decorations
+                </div>
+                <button id="revert-btn" 
+                        class="btn bg-christmas-blue hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full shadow-md btn-bounce revert-btn">
+                    <i class="fa fa-undo mr-2"></i> Revert
+                </button>
+                <button id="clear-tree-btn" 
+                        class="btn bg-christmas-gold hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full shadow-md btn-bounce">
+                    <i class="fa fa-trash mr-2"></i> Clear
+                </button>
+            </div>
+        </div>
+        
+        <div id="tree-area" class="tree-drop-zone bg-white rounded-2xl shadow-xl p-4 h-[calc(100vh-180px)] relative overflow-hidden">
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0">
+                <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/13cc3933bd8945efb173c14ad2f1e4ba~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=6U6w%2FqzmtAovJYPr9qlrLKsxD2E%3D" 
+                     alt="Christmas Tree" 
+                     class="w-72 h-auto">
+            </div>
+            
+            <div id="decorations-container" class="absolute inset-0 z-10">
+                <!-- Decorations will be displayed here -->
+            </div>
+            
+            <div id="drop-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+                <div class="bg-christmas-blue bg-opacity-90 text-white px-6 py-3 rounded-full shadow-lg">
+                    <i class="fa fa-gift mr-2"></i> Drop on Christmas Tree
+                </div>
+            </div>
+        </div>
+        
+        <div id="decorations-library" class="bg-white rounded-2xl shadow-xl p-4 mt-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-christmas-green">My Decorations Library</h3>
+                <div class="text-sm text-gray-500">
+                    Drag decorations to the tree
+                </div>
+            </div>
+            
+            <div id="decorations-list" class="flex flex-wrap gap-4 p-2 min-h-24">
+                <!-- Available decorations will be displayed here -->
+                <div id="empty-library-message" class="text-gray-400 italic flex items-center justify-center w-full h-24">
+                    <div class="text-center">
+                        <i class="fa fa-info-circle text-2xl mb-2"></i>
+                        <p>Learn words to get decorations</p>
+                        <p class="text-sm mt-1">Get each word correct 3 times to earn 2 decorations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Word list with images and audio - FIXED AUDIO URLs
+        const wordList = [
+            {
+                word: "Tree",
+                image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/13cc3933bd8945efb173c14ad2f1e4ba~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=6U6w%2FqzmtAovJYPr9qlrLKsxD2E%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/tree--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0 // Number of this decoration available
+            },
+            {
+                word: "Santa",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/62ae86a9a24b434992adf8b6ebe6f027~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=eic6iVmXOUkdERiE%2FyiklnE%2BWi4%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/santa--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Sleigh",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/11f1a76b5e1943fb91728a9f683fe3de~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=0dSQwVxbldhl1dj1Q%2F9wlB0svOo%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/sleigh--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Stockings",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/d2ad5680c6b94bb4b17fce823ddb24c1~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=VvBXT91X5Fc49IH%2FC7UZDgLgE1Y%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/stocking--_gb_1.mp3", // Fixed URL
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Ball",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c7e687b27a27428986580d62618e9aa9~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=JAV5livx38CpXRy9CvmPFgRjv4U%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/ball--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Star",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/3487d589d4e749dcbd85625c5424a05a~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691044&x-signature=D5nwmauuYO7ohXBAhDwRHgPLdbk%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/star--_gb_1.mp3", // Fixed URL
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Bell",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/05761fbe9afe4c39879920bb94be5420~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691064&x-signature=mwIYq%2B%2B22cyBZUhZkCrMI3r5wGo%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/bell--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Lights",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c2afe54fef8247a599ee8236bd09db98~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691064&x-signature=uVp9ciXU5wCHH3E9QbYGUvpfRGc%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/light--_gb_1.mp3", // Using light instead of lights
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Ribbon",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/2f4a58dedf1b4dca88748693beda7556~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691066&x-signature=7SdkvFKpTzLkOmV%2Bt%2FEA9gRfsZA%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/ribbon--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Bow",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/7c5baa0685094fbd83b7bc6161678a35~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691063&x-signature=KijrZa%2FQPE4NiBjyeov8LQca6HQ%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/bow--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Gingerbread",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/8fc52e1714144129a8aa00c651ab4c69~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691065&x-signature=r7kMsciac60YMV5%2FzlECpLa0vLA%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/gingerbread--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Candy",
+                image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/2706e75080844c2cba53ffc5916d12f6~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691064&x-signature=FE3aeBXHISm%2FKmIEYjWAVSsSYyY%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/candy--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Gift",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/8e65cc7eada547c8a83e20d8ce2445c1~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691093&x-signature=sIMHVf1QkvwmkhrYzKX6rhAdrjQ%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/gift--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Snowman",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/9feb303c9df241fbb15cbf8480cdd07f~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691092&x-signature=28PBKyYqVXHQ8zgFitlp9Tkh9gk%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/snowman--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Reindeer",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/a93eec7fdbc847cebe8debbc826f3705~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691093&x-signature=lZqwvQ%2BPSI6nAHg34P29IkFGqpc%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/reindeer--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Pinecone",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/4570a3e8e6aa4ab9a4cdbf276e3f2861~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691093&x-signature=FmMdpdv1jA53D1tvRHcOCG5d2tA%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/pinecone--_gb_2.mp3", // Fixed URL
+                mastered: 0,
+                inventory: 0
+            },
+            {
+                word: "Berry",
+                image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/922ffeafd35c464d8fb582078ac931c6~tplv-a9rns2rl98-image.image?rcl=20251207171709B0F4AB0A912307C384DC&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767691092&x-signature=PAczobA6m2JSlGPHq7Xd6OfW6wE%3D",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/berry--_gb_1.mp3",
+                mastered: 0,
+                inventory: 0
+            }
+        ];
+        
+        // Game state
+        let currentWordIndex = 0;
+        let score = 0;
+        let masteredWords = [];
+        let decorationInventory = {}; // Track inventory for each decoration type
+        
+        // 装饰页面专用状态
+        let decorationZIndex = 100; // 用于管理装饰品的z-index
+        let placedDecorationsCount = 0;
+        let actionHistory = []; // For tracking actions for revert functionality
+        let redoHistory = []; // For tracking actions for redo functionality
+        
+        // 开场动画状态
+        let introCountdown = 10; // 10秒倒计时
+        let introTimer = null;
+        let introProgressInterval = null;
+        
+        // DOM Elements
+        const mainPage = document.getElementById('main-page');
+        const wordLearningPage = document.getElementById('word-learning-page');
+        const treeDecorationPage = document.getElementById('tree-decoration-page');
+        
+        const welcomeAnimation = document.getElementById('welcome-animation');
+        const mainContent = document.getElementById('main-content');
+        
+        const learnWordsBtn = document.getElementById('learn-words-btn');
+        const decorateTreeBtn = document.getElementById('decorate-tree-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const backToMainBtn = document.getElementById('back-to-main-btn');
+        const backToMainFromTreeBtn = document.getElementById('back-to-main-from-tree-btn');
+        
+        const wordCard = document.getElementById('word-card');
+        const currentImage = document.getElementById('current-image');
+        const wordAudioBtn = document.getElementById('word-audio-btn');
+        const wordOptions = document.getElementById('word-options');
+        const scoreDisplay = document.getElementById('score-display');
+        const mainScoreDisplay = document.getElementById('main-score-display');
+        const masteredCountDisplay = document.getElementById('mastered-count');
+        const totalWordsDisplay = document.getElementById('total-words');
+        const wordsToLearnCount = document.getElementById('words-to-learn-count');
+        const wordsMasteredCount = document.getElementById('words-mastered-count');
+        const learningProgressBar = document.getElementById('learning-progress-bar');
+        
+        const successMessage = document.getElementById('success-message');
+        const allMasteredMessage = document.getElementById('all-mastered-message');
+        const earnedItemName = document.getElementById('earned-item-name');
+        const earnedItemImage = document.getElementById('earned-item-image');
+        const earnedItemCount = document.getElementById('earned-item-count');
+        const continueBtn = document.getElementById('continue-btn');
+        const goToDecorateBtn = document.getElementById('go-to-decorate-btn');
+        const reviewWordsBtn = document.getElementById('review-words-btn');
+        
+        const treeArea = document.getElementById('tree-area');
+        const decorationsContainer = document.getElementById('decorations-container');
+        const decorationsList = document.getElementById('decorations-list');
+        const clearTreeBtn = document.getElementById('clear-tree-btn');
+        const revertBtn = document.getElementById('revert-btn');
+        const dropHint = document.getElementById('drop-hint');
+        const decorationsCount = document.getElementById('decorations-count');
+        const emptyLibraryMessage = document.getElementById('empty-library-message');
+        
+        // 开场动画相关元素
+        const countdownCircle = document.getElementById('countdown-circle');
+        const countdownNumber = document.getElementById('countdown-number');
+        const skipIntroBtn = document.getElementById('skip-intro-btn');
+        const introProgressBar = document.getElementById('intro-progress-bar');
+        const typewriterText = document.getElementById('typewriter-text');
+        
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', () => {
+            // 开始开场动画
+            startIntroAnimation();
+            
+            // Load saved game state if exists
+            loadGameState();
+            
+            // Load tree decorations
+            loadTreeDecorations();
+            
+            // Update revert button state
+            updateRevertButton();
+            
+            // Update main page displays
+            updateMainPageDisplays();
+            
+            // Set total words count
+            totalWordsDisplay.textContent = wordList.length;
+            wordsToLearnCount.textContent = wordList.length - masteredWords.length;
+        });
+        
+        // 开始开场动画
+        function startIntroAnimation() {
+            // 重置倒计时
+            introCountdown = 10;
+            countdownNumber.textContent = introCountdown;
+            
+            // 重置进度条
+            introProgressBar.style.width = '0%';
+            
+            // 开始倒计时
+            introTimer = setInterval(() => {
+                introCountdown--;
+                countdownNumber.textContent = introCountdown;
+                
+                // 更新进度条
+                const progressPercentage = ((10 - introCountdown) / 10) * 100;
+                introProgressBar.style.width = `${progressPercentage}%`;
+                
+                // 当倒计时为0时，结束开场动画
+                if (introCountdown <= 0) {
+                    endIntroAnimation();
+                }
+            }, 1000);
+            
+            // 添加跳过按钮事件
+            skipIntroBtn.addEventListener('click', endIntroAnimation);
+        }
+        
+        // 结束开场动画
+        function endIntroAnimation() {
+            // 清除定时器
+            if (introTimer) {
+                clearInterval(introTimer);
+                introTimer = null;
+            }
+            
+            if (introProgressInterval) {
+                clearInterval(introProgressInterval);
+                introProgressInterval = null;
+            }
+            
+            // 添加淡出动画
+            welcomeAnimation.classList.add('animate-fade-out');
+            
+            // 等待动画完成后隐藏开场动画
+            setTimeout(() => {
+                welcomeAnimation.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('fade-in');
+                
+                // 播放欢迎音效
+                playWelcomeSound();
+            }, 1000);
+        }
+        
+        // 播放欢迎音效
+        function playWelcomeSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // 创建多个振荡器模拟圣诞铃声
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        // 不同音符
+                        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+                        oscillator.frequency.value = notes[i];
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.5);
+                    }, i * 200);
+                }
+            } catch (e) {
+                // 静默处理音频错误
+            }
+        }
+        
+        // Navigation event listeners
+        learnWordsBtn.addEventListener('click', () => {
+            mainPage.classList.remove('active');
+            wordLearningPage.classList.add('active');
+            updateLearningProgress();
+            loadWordCard();
+        });
+        
+        decorateTreeBtn.addEventListener('click', () => {
+            mainPage.classList.remove('active');
+            treeDecorationPage.classList.add('active');
+            // Initialize decoration page
+            initializeDecorationPage();
+        });
+        
+        restartBtn.addEventListener('click', () => {
+            resetGame();
+        });
+        
+        backToMainBtn.addEventListener('click', () => {
+            wordLearningPage.classList.remove('active');
+            mainPage.classList.add('active');
+            updateMainPageDisplays();
+        });
+        
+        backToMainFromTreeBtn.addEventListener('click', () => {
+            treeDecorationPage.classList.remove('active');
+            mainPage.classList.add('active');
+            updateMainPageDisplays();
+        });
+        
+        clearTreeBtn.addEventListener('click', () => {
+            clearTreeDecorations();
+        });
+        
+        revertBtn.addEventListener('click', () => {
+            revertLastAction();
+        });
+        
+        // Word learning event listeners
+        wordAudioBtn.addEventListener('click', () => {
+            playWordAudio();
+        });
+        
+        continueBtn.addEventListener('click', () => {
+            successMessage.classList.add('hidden');
+            wordCard.classList.remove('hidden');
+            loadWordCard();
+        });
+        
+        goToDecorateBtn.addEventListener('click', () => {
+            wordLearningPage.classList.remove('active');
+            treeDecorationPage.classList.add('active');
+            initializeDecorationPage();
+        });
+        
+        reviewWordsBtn.addEventListener('click', () => {
+            allMasteredMessage.classList.add('hidden');
+            wordCard.classList.remove('hidden');
+            // Force review mode - show all words including mastered ones
+            loadWordCard(true);
+        });
+        
+        // ========== 装饰页面功能 ==========
+        
+        // 初始化装饰页面
+        function initializeDecorationPage() {
+            updateDecorationsLibrary();
+            setupDropZone();
+            updateDecorationsCount();
+            updateRevertButton();
+        }
+        
+        // 设置圣诞树为拖拽区域
+        function setupDropZone() {
+            // 拖拽进入区域时显示提示
+            treeArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                treeArea.classList.add('drag-over');
+                dropHint.classList.add('opacity-100');
+                e.dataTransfer.dropEffect = 'copy';
+            });
+            
+            // 拖拽离开区域时隐藏提示
+            treeArea.addEventListener('dragleave', (e) => {
+                if (!treeArea.contains(e.relatedTarget)) {
+                    treeArea.classList.remove('drag-over');
+                    dropHint.classList.remove('opacity-100');
+                }
+            });
+            
+            // 放置装饰品
+            treeArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                treeArea.classList.remove('drag-over');
+                dropHint.classList.remove('opacity-100');
+                
+                const decorationId = e.dataTransfer.getData('text/plain');
+                const decoration = document.getElementById(decorationId);
+                
+                if (decoration && decoration.classList.contains('decoration-library-item')) {
+                    // 计算放置位置（相对于圣诞树区域）
+                    const rect = treeArea.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // 获取装饰品信息
+                    const word = decoration.dataset.word;
+                    const decorationIndex = parseInt(decoration.dataset.index || '0');
+                    
+                    // 克隆装饰品并放置到圣诞树上
+                    placeDecorationOnTree(decoration, x, y, word, decorationIndex);
+                    
+                    // 减少该装饰品的库存数量
+                    const currentInventory = decorationInventory[word] || 0;
+                    if (currentInventory > 0) {
+                        decorationInventory[word] = currentInventory - 1;
+                        
+                        // 更新装饰库显示
+                        updateDecorationsLibrary();
+                    }
+                    
+                    // 更新已放置装饰品计数
+                    placedDecorationsCount++;
+                    updateDecorationsCount();
+                    
+                    // 保存装饰状态
+                    saveDecorationState();
+                    saveGameState();
+                    
+                    // 记录这个动作到历史
+                    recordAction('add', {
+                        word: word,
+                        x: x - 40,
+                        y: y - 40,
+                        inventoryIndex: decorationIndex
+                    });
+                }
+            });
+        }
+        
+        // 将装饰品放置到圣诞树上
+        function placeDecorationOnTree(sourceDecoration, x, y, word, decorationIndex) {
+            // 获取装饰品信息
+            const imageSrc = sourceDecoration.querySelector('img').src;
+            
+            // 创建新的装饰品元素
+            const decorationId = `decorated-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            const decoration = document.createElement('div');
+            decoration.className = 'decorated-item drop-animation';
+            decoration.dataset.word = word;
+            decoration.dataset.index = decorationIndex;
+            decoration.dataset.id = decorationId;
+            decoration.style.position = 'absolute';
+            decoration.style.left = `${x - 40}px`; // 偏移图片中心
+            decoration.style.top = `${y - 40}px`;
+            decoration.style.zIndex = decorationZIndex++;
+            
+            // 添加装饰品内容
+            decoration.innerHTML = `
+                <img src="${imageSrc}" alt="${word}" 
+                     class="w-20 h-20 object-contain drop-shadow-lg"
+                     draggable="false">
+                <div class="absolute -top-2 -right-2 w-6 h-6 bg-christmas-red rounded-full flex items-center justify-center cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200"
+                     onclick="removeDecoration('${decorationId}')">
+                    <i class="fa fa-times text-white text-xs"></i>
+                </div>
+            `;
+            
+            // 添加到圣诞树容器
+            decorationsContainer.appendChild(decoration);
+            
+            // 使装饰品可拖动
+            makeDecorationDraggable(decoration);
+            
+            // 播放放置音效
+            playPlacementSound();
+            
+            return decorationId;
+        }
+        
+        // 移除装饰品
+        function removeDecoration(decorationId, recordActionFlag = true) {
+            const decoration = document.querySelector(`[data-id="${decorationId}"]`);
+            if (decoration) {
+                const word = decoration.dataset.word;
+                const x = parseInt(decoration.style.left);
+                const y = parseInt(decoration.style.top);
+                const decorationIndex = parseInt(decoration.dataset.index || '0');
+                
+                // 从DOM中移除
+                decoration.remove();
+                
+                // 增加该装饰品的库存数量
+                const currentInventory = decorationInventory[word] || 0;
+                decorationInventory[word] = currentInventory + 1;
+                
+                // 更新计数
+                placedDecorationsCount = Math.max(0, placedDecorationsCount - 1);
+                updateDecorationsCount();
+                
+                // 重新生成装饰库
+                updateDecorationsLibrary();
+                
+                // 保存状态
+                saveDecorationState();
+                saveGameState();
+                
+                // 记录这个动作到历史
+                if (recordActionFlag) {
+                    recordAction('remove', {
+                        word: word,
+                        x: x,
+                        y: y,
+                        inventoryIndex: decorationIndex
+                    });
+                }
+            }
+        }
+        
+        // 记录动作到历史
+        function recordAction(type, data) {
+            actionHistory.push({
+                type: type,
+                data: data,
+                timestamp: Date.now()
+            });
+            
+            // 清空重做历史
+            redoHistory = [];
+            
+            // 限制历史记录长度
+            if (actionHistory.length > 50) {
+                actionHistory.shift();
+            }
+            
+            // 更新撤销按钮状态
+            updateRevertButton();
+        }
+        
+        // 撤销上一步操作
+        function revertLastAction() {
+            if (actionHistory.length === 0) return;
+            
+            const lastAction = actionHistory.pop();
+            redoHistory.push(lastAction);
+            
+            if (lastAction.type === 'add') {
+                // 如果是添加操作，撤销就是移除
+                // 找到最后添加的这个装饰品并移除
+                const decorations = Array.from(decorationsContainer.querySelectorAll('.decorated-item'));
+                const lastDecoration = decorations.find(dec => 
+                    dec.dataset.word === lastAction.data.word && 
+                    parseInt(dec.style.left) === lastAction.data.x &&
+                    parseInt(dec.style.top) === lastAction.data.y
+                );
+                
+                if (lastDecoration) {
+                    removeDecoration(lastDecoration.dataset.id, false);
+                }
+            } else if (lastAction.type === 'remove') {
+                // 如果是移除操作，撤销就是重新添加
+                const wordData = wordList.find(w => w.word === lastAction.data.word);
+                if (wordData) {
+                    // 创建一个临时的装饰品元素来放置
+                    const tempDiv = document.createElement('div');
+                    tempDiv.style.display = 'none';
+                    tempDiv.innerHTML = `<img src="${wordData.image}" alt="${lastAction.data.word}">`;
+                    document.body.appendChild(tempDiv);
+                    
+                    // 放置装饰品
+                    placeDecorationOnTree(tempDiv, lastAction.data.x + 40, lastAction.data.y + 40, lastAction.data.word, lastAction.data.inventoryIndex);
+                    
+                    // 减少库存（因为重新添加了）
+                    const currentInventory = decorationInventory[lastAction.data.word] || 0;
+                    if (currentInventory > 0) {
+                        decorationInventory[lastAction.data.word] = currentInventory - 1;
+                        updateDecorationsLibrary();
+                    }
+                    
+                    // 移除临时元素
+                    tempDiv.remove();
+                }
+            } else if (lastAction.type === 'move') {
+                // 如果是移动操作，撤销就是移回原位置
+                const decorations = Array.from(decorationsContainer.querySelectorAll('.decorated-item'));
+                const movedDecoration = decorations.find(dec => dec.dataset.id === lastAction.data.id);
+                
+                if (movedDecoration) {
+                    movedDecoration.style.left = `${lastAction.data.originalX}px`;
+                    movedDecoration.style.top = `${lastAction.data.originalY}px`;
+                }
+            }
+            
+            // 更新撤销按钮状态
+            updateRevertButton();
+            
+            // 保存状态
+            saveDecorationState();
+            saveGameState();
+        }
+        
+        // 更新撤销按钮状态
+        function updateRevertButton() {
+            if (actionHistory.length === 0) {
+                revertBtn.disabled = true;
+                revertBtn.setAttribute('title', 'No actions to revert');
+            } else {
+                revertBtn.disabled = false;
+                const lastAction = actionHistory[actionHistory.length - 1];
+                let actionText = '';
+                
+                if (lastAction.type === 'add') {
+                    actionText = `Revert: Add ${lastAction.data.word}`;
+                } else if (lastAction.type === 'remove') {
+                    actionText = `Revert: Remove ${lastAction.data.word}`;
+                } else if (lastAction.type === 'move') {
+                    actionText = `Revert: Move ${lastAction.data.word}`;
+                }
+                
+                revertBtn.setAttribute('title', actionText);
+            }
+        }
+        
+        // 更新装饰品计数显示
+        function updateDecorationsCount() {
+            decorationsCount.textContent = placedDecorationsCount;
+        }
+        
+        // 更新装饰品库
+        function updateDecorationsLibrary() {
+            decorationsList.innerHTML = '';
+            
+            // 检查是否有任何装饰品库存
+            const hasInventory = Object.values(decorationInventory).some(count => count > 0);
+            
+            if (!hasInventory) {
+                // 显示提示信息
+                emptyLibraryMessage.classList.remove('hidden');
+                decorationsList.appendChild(emptyLibraryMessage);
+            } else {
+                emptyLibraryMessage.classList.add('hidden');
+                
+                // 添加可用的装饰品
+                Object.entries(decorationInventory).forEach(([word, count]) => {
+                    if (count > 0) {
+                        const wordData = wordList.find(w => w.word === word);
+                        if (wordData) {
+                            // 为每个库存创建多个装饰品实例
+                            for (let i = 0; i < count; i++) {
+                                const decorationItem = document.createElement('div');
+                                decorationItem.className = 'decoration-library-item draggable flex flex-col items-center cursor-grab p-2 bg-gray-50 rounded-lg hover:bg-gray-100 relative';
+                                decorationItem.draggable = true;
+                                decorationItem.dataset.word = word;
+                                decorationItem.dataset.index = i;
+                                decorationItem.id = `decoration-${word.replace(/\s+/g, '-')}-${i}-${Date.now()}`;
+                                
+                                decorationItem.innerHTML = `
+                                    <img src="${wordData.image}" alt="${word}" 
+                                         class="w-16 h-16 object-contain mb-2"
+                                         draggable="false">
+                                    <span class="text-xs font-medium text-gray-700">${word}</span>
+                                    <div class="absolute top-1 right-1 w-4 h-4 bg-christmas-green rounded-full flex items-center justify-center">
+                                        <i class="fa fa-gift text-white text-xs"></i>
+                                    </div>
+                                    ${count > 1 ? `<div class="decoration-count-badge">${count}</div>` : ''}
+                                `;
+                                
+                                // 添加拖拽事件
+                                setupDecorationDragEvents(decorationItem);
+                                
+                                decorationsList.appendChild(decorationItem);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // 设置装饰品的拖拽事件
+        function setupDecorationDragEvents(element) {
+            element.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                e.dataTransfer.effectAllowed = 'copy';
+                
+                // 添加拖拽反馈
+                e.target.classList.add('opacity-50');
+                
+                // 设置拖拽图片
+                const img = e.target.querySelector('img');
+                if (img && e.dataTransfer.setDragImage) {
+                    const dragImage = document.createElement('div');
+                    dragImage.style.width = '60px';
+                    dragImage.style.height = '60px';
+                    dragImage.style.background = `url(${img.src}) center/contain no-repeat`;
+                    dragImage.style.borderRadius = '50%';
+                    dragImage.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+                    dragImage.style.position = 'absolute';
+                    dragImage.style.top = '-1000px';
+                    document.body.appendChild(dragImage);
+                    
+                    e.dataTransfer.setDragImage(dragImage, 30, 30);
+                    
+                    setTimeout(() => document.body.removeChild(dragImage), 0);
+                }
+            });
+            
+            element.addEventListener('dragend', (e) => {
+                e.target.classList.remove('opacity-50');
+            });
+        }
+        
+        // 使圣诞树上的装饰品可拖动
+        function makeDecorationDraggable(element) {
+            let isDragging = false;
+            let startX, startY, initialX, initialY;
+            
+            element.addEventListener('mousedown', startDrag);
+            element.addEventListener('touchstart', startDragTouch);
+            
+            function startDrag(e) {
+                isDragging = true;
+                
+                // 记录初始位置
+                startX = e.clientX || e.touches[0].clientX;
+                startY = e.clientY || e.touches[0].clientY;
+                initialX = element.offsetLeft;
+                initialY = element.offsetTop;
+                
+                // 提升z-index，确保在最前面
+                element.style.zIndex = decorationZIndex++;
+                element.classList.add('dragging');
+                
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchmove', dragTouch);
+                document.addEventListener('touchend', stopDrag);
+                
+                e.preventDefault();
+            }
+            
+            function startDragTouch(e) {
+                if (e.touches.length === 1) {
+                    startDrag(e);
+                }
+            }
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                
+                if (clientX === undefined || clientY === undefined) return;
+                
+                const dx = clientX - startX;
+                const dy = clientY - startY;
+                
+                element.style.left = `${initialX + dx}px`;
+                element.style.top = `${initialY + dy}px`;
+            }
+            
+            function dragTouch(e) {
+                drag(e);
+            }
+            
+            function stopDrag(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                element.classList.remove('dragging');
+                
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+                document.removeEventListener('touchmove', dragTouch);
+                document.removeEventListener('touchend', stopDrag);
+                
+                // 记录移动动作
+                const finalX = element.offsetLeft;
+                const finalY = element.offsetTop;
+                
+                if (finalX !== initialX || finalY !== initialY) {
+                    recordAction('move', {
+                        id: element.dataset.id,
+                        word: element.dataset.word,
+                        originalX: initialX,
+                        originalY: initialY,
+                        newX: finalX,
+                        newY: finalY
+                    });
+                }
+                
+                // 保存装饰品位置
+                saveDecorationState();
+            }
+        }
+        
+        // 加载圣诞树上的装饰品
+        function loadTreeDecorations() {
+            // 从保存的状态中加载装饰品
+            const savedDecorations = JSON.parse(localStorage.getItem('treeDecorations')) || [];
+            
+            placedDecorationsCount = savedDecorations.length;
+            
+            savedDecorations.forEach(decoration => {
+                const wordData = wordList.find(w => w.word === decoration.word);
+                if (wordData) {
+                    // 创建装饰品元素
+                    const decorationEl = document.createElement('div');
+                    decorationEl.className = 'decorated-item';
+                    decorationEl.dataset.word = decoration.word;
+                    decorationEl.dataset.index = decoration.index || 0;
+                    decorationEl.dataset.id = decoration.id;
+                    decorationEl.style.position = 'absolute';
+                    decorationEl.style.left = `${decoration.x}px`;
+                    decorationEl.style.top = `${decoration.y}px`;
+                    decorationEl.style.zIndex = decoration.zIndex || decorationZIndex++;
+                    
+                    // 添加装饰品内容
+                    decorationEl.innerHTML = `
+                        <img src="${wordData.image}" alt="${decoration.word}" 
+                             class="w-20 h-20 object-contain drop-shadow-lg"
+                             draggable="false">
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-christmas-red rounded-full flex items-center justify-center cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-200"
+                             onclick="removeDecoration('${decoration.id}')">
+                            <i class="fa fa-times text-white text-xs"></i>
+                        </div>
+                    `;
+                    
+                    // 添加到圣诞树容器
+                    decorationsContainer.appendChild(decorationEl);
+                    
+                    // 使装饰品可拖动
+                    makeDecorationDraggable(decorationEl);
+                }
+            });
+        }
+        
+        // 保存装饰状态
+        function saveDecorationState() {
+            const decorations = [];
+            const decorationElements = decorationsContainer.querySelectorAll('.decorated-item');
+            
+            decorationElements.forEach(el => {
+                decorations.push({
+                    id: el.dataset.id,
+                    word: el.dataset.word,
+                    index: parseInt(el.dataset.index || '0'),
+                    x: parseInt(el.style.left),
+                    y: parseInt(el.style.top),
+                    zIndex: parseInt(el.style.zIndex)
+                });
+            });
+            
+            localStorage.setItem('treeDecorations', JSON.stringify(decorations));
+        }
+        
+        // 播放放置装饰品的音效
+        function playPlacementSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 523.25; // C5音符
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                // 静默处理音频错误
+            }
+        }
+        
+        // 清空圣诞树上的装饰品
+        function clearTreeDecorations() {
+            if (confirm('Are you sure you want to clear all decorations from the tree?')) {
+                // 记录清除动作
+                const decorations = Array.from(decorationsContainer.querySelectorAll('.decorated-item'));
+                decorations.forEach(dec => {
+                    const word = dec.dataset.word;
+                    const currentInventory = decorationInventory[word] || 0;
+                    decorationInventory[word] = currentInventory + 1;
+                });
+                
+                decorationsContainer.innerHTML = '';
+                placedDecorationsCount = 0;
+                updateDecorationsCount();
+                updateDecorationsLibrary();
+                saveDecorationState();
+                saveGameState();
+                
+                // 记录清除动作
+                recordAction('clear', { count: decorations.length });
+            }
+        }
+        
+        // ========== 单词学习功能 ==========
+        
+        // Load word card with current word
+        function loadWordCard(reviewMode = false) {
+            // 检查是否所有单词都已掌握
+            if (masteredWords.length >= wordList.length && !reviewMode) {
+                // 显示所有单词都已掌握的消息
+                wordCard.classList.add('hidden');
+                allMasteredMessage.classList.remove('hidden');
+                allMasteredMessage.classList.add('bounce-in');
+                return;
+            }
+            
+            // 获取未掌握的单词
+            let wordsToUse;
+            if (reviewMode) {
+                // 复习模式：显示所有单词（包括已掌握的）
+                wordsToUse = [...wordList];
+            } else {
+                // 正常学习模式：只显示未掌握的单词
+                wordsToUse = wordList.filter(word => !masteredWords.includes(word.word));
+            }
+            
+            if (wordsToUse.length === 0) {
+                // 如果没有单词可学习，显示所有单词都已掌握的消息
+                wordCard.classList.add('hidden');
+                allMasteredMessage.classList.remove('hidden');
+                allMasteredMessage.classList.add('bounce-in');
+                return;
+            }
+            
+            // Shuffle words
+            shuffleArray(wordsToUse);
+            
+            // Set current word
+            const currentWord = wordsToUse[0];
+            currentWordIndex = wordList.findIndex(word => word.word === currentWord.word);
+            
+            // Update image
+            currentImage.innerHTML = `<img src="${currentWord.image}" alt="${currentWord.word}" class="w-full h-full object-contain">`;
+            
+            // Generate word options
+            generateWordOptions(currentWord.word, reviewMode);
+            
+            // Play audio
+            playWordAudio();
+        }
+        
+        // Generate word options for the current word
+        function generateWordOptions(correctWord, reviewMode = false) {
+            wordOptions.innerHTML = '';
+            
+            // Get 3 random incorrect words
+            let incorrectWords;
+            if (reviewMode) {
+                // 复习模式：可以从所有单词中选择
+                incorrectWords = wordList
+                    .filter(word => word.word !== correctWord)
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3)
+                    .map(word => word.word);
+            } else {
+                // 正常模式：优先从未掌握的单词中选择
+                const unmasteredWords = wordList.filter(word => !masteredWords.includes(word.word) && word.word !== correctWord);
+                if (unmasteredWords.length >= 3) {
+                    incorrectWords = unmasteredWords
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, 3)
+                        .map(word => word.word);
+                } else {
+                    // 如果未掌握的单词不够，补充一些已掌握的单词
+                    const masteredOptions = wordList
+                        .filter(word => masteredWords.includes(word.word) && word.word !== correctWord)
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, 3 - unmasteredWords.length)
+                        .map(word => word.word);
+                    
+                    incorrectWords = [
+                        ...unmasteredWords.map(word => word.word),
+                        ...masteredOptions
+                    ].slice(0, 3);
+                }
+            }
+            
+            // Combine correct and incorrect words
+            const allOptions = [correctWord, ...incorrectWords];
+            
+            // Shuffle options
+            shuffleArray(allOptions);
+            
+            // Create option buttons
+            allOptions.forEach(option => {
+                const optionButton = document.createElement('button');
+                optionButton.className = 'word-option bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg transition-all duration-200';
+                optionButton.textContent = option;
+                
+                // 如果单词已掌握，添加特殊样式
+                if (masteredWords.includes(option)) {
+                    optionButton.classList.add('mastered-badge');
+                    optionButton.innerHTML = `${option} <i class="fa fa-check ml-2"></i>`;
+                }
+                
+                optionButton.addEventListener('click', () => {
+                    checkAnswer(option, optionButton);
+                });
+                
+                wordOptions.appendChild(optionButton);
+            });
+        }
+        
+        // Check if the selected answer is correct
+        function checkAnswer(selectedWord, button) {
+            const correctWord = wordList[currentWordIndex].word;
+            const isCorrect = selectedWord === correctWord;
+            
+            // Disable all buttons
+            const buttons = wordOptions.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-70');
+            });
+            
+            // Highlight correct and incorrect answers
+            buttons.forEach(btn => {
+                if (btn.textContent === correctWord || btn.textContent.includes(correctWord)) {
+                    btn.classList.add('correct');
+                } else if ((btn.textContent === selectedWord || btn.textContent.includes(selectedWord)) && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            if (isCorrect) {
+                // Increment score
+                score += 10;
+                scoreDisplay.textContent = score;
+                
+                // Increment mastered count for this word
+                wordList[currentWordIndex].mastered += 1;
+                
+                // Check if word is mastered (correct 3 times)
+                if (wordList[currentWordIndex].mastered >= 3 && !masteredWords.includes(correctWord)) {
+                    masteredWords.push(correctWord);
+                    
+                    // Add to inventory - each mastered word gives 2 copies of the decoration
+                    decorationInventory[correctWord] = (decorationInventory[correctWord] || 0) + 2;
+                    
+                    // Show success message with earned item
+                    showSuccessMessage(correctWord);
+                    
+                    // 更新学习进度
+                    updateLearningProgress();
+                    updateMainPageDisplays();
+                } else {
+                    // Load next word after a delay
+                    setTimeout(() => {
+                        loadWordCard();
+                    }, 1500);
+                }
+            } else {
+                // Load next word after a delay
+                setTimeout(() => {
+                    loadWordCard();
+                }, 1500);
+            }
+            
+            // Save game state
+            saveGameState();
+        }
+        
+        // 更新学习进度显示
+        function updateLearningProgress() {
+            const wordsToLearn = wordList.length - masteredWords.length;
+            const progressPercentage = (masteredWords.length / wordList.length) * 100;
+            
+            wordsToLearnCount.textContent = wordsToLearn;
+            wordsMasteredCount.textContent = masteredWords.length;
+            learningProgressBar.style.width = `${progressPercentage}%`;
+        }
+        
+        // 更新主页面显示
+        function updateMainPageDisplays() {
+            mainScoreDisplay.textContent = score;
+            masteredCountDisplay.textContent = masteredWords.length;
+        }
+        
+        // Show success message when a word is mastered
+        function showSuccessMessage(word) {
+            // Hide word card and show success message
+            wordCard.classList.add('hidden');
+            successMessage.classList.remove('hidden');
+            successMessage.classList.add('bounce-in');
+            
+            // Set earned item info
+            earnedItemName.textContent = word;
+            earnedItemCount.textContent = word; // 显示单词名称
+            
+            const wordData = wordList.find(w => w.word === word);
+            earnedItemImage.src = wordData.image;
+            
+            // Update decorations library
+            updateDecorationsLibrary();
+            
+            // Create confetti effect
+            createConfetti();
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.className = 'absolute inset-0 pointer-events-none';
+            successMessage.appendChild(confettiContainer);
+            
+            const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 3}s`;
+                confetti.style.animationDuration = `${2 + Math.random() * 3}s`;
+                
+                confettiContainer.appendChild(confetti);
+            }
+            
+            // Remove confetti after animation
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 5000);
+        }
+        
+        // Play audio for current word - with error handling
+        function playWordAudio() {
+            const currentWord = wordList[currentWordIndex];
+            
+            // 尝试播放音频，如果失败则使用TTS备用方案
+            const audio = new Audio(currentWord.audio);
+            
+            audio.play().catch(error => {
+                console.log(`Audio playback failed for ${currentWord.word}, using TTS fallback:`, error);
+                
+                // 使用Web Speech API作为备用方案
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(currentWord.word);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.8; // 稍微慢一点，更适合儿童
+                    
+                    // 尝试使用不同的语音
+                    const voices = speechSynthesis.getVoices();
+                    const englishVoice = voices.find(voice => 
+                        voice.lang.includes('en') && 
+                        !voice.name.includes('Google') // 优先使用非Google语音，它们通常更可靠
+                    );
+                    
+                    if (englishVoice) {
+                        utterance.voice = englishVoice;
+                    }
+                    
+                    speechSynthesis.speak(utterance);
+                } else {
+                    console.log('Speech synthesis not supported');
+                }
+            });
+        }
+        
+        // Reset the game
+        function resetGame() {
+            if (confirm('Are you sure you want to reset the game? All progress will be lost!')) {
+                // Reset game state
+                currentWordIndex = 0;
+                score = 0;
+                masteredWords = [];
+                decorationInventory = {};
+                placedDecorationsCount = 0;
+                actionHistory = [];
+                redoHistory = [];
+                
+                // Reset word list
+                wordList.forEach(word => {
+                    word.mastered = 0;
+                    word.inventory = 0;
+                });
+                
+                // Update UI
+                scoreDisplay.textContent = score;
+                mainScoreDisplay.textContent = score;
+                masteredCountDisplay.textContent = 0;
+                wordsToLearnCount.textContent = wordList.length;
+                wordsMasteredCount.textContent = 0;
+                learningProgressBar.style.width = '0%';
+                decorationsContainer.innerHTML = '';
+                updateDecorationsCount();
+                updateDecorationsLibrary();
+                updateRevertButton();
+                
+                // Clear local storage
+                localStorage.removeItem('christmasGameState');
+                localStorage.removeItem('treeDecorations');
+                
+                // Save game state
+                saveGameState();
+                
+                // Show confirmation
+                alert('Game has been reset! All progress has been cleared.');
+            }
+        }
+        
+        // Save game state to localStorage
+        function saveGameState() {
+            const gameState = {
+                score,
+                masteredWords,
+                decorationInventory,
+                actionHistory,
+                wordList: wordList.map(word => ({
+                    word: word.word,
+                    mastered: word.mastered
+                }))
+            };
+            
+            localStorage.setItem('christmasGameState', JSON.stringify(gameState));
+        }
+        
+        // Load game state from localStorage
+        function loadGameState() {
+            const savedState = localStorage.getItem('christmasGameState');
+            
+            if (savedState) {
+                const gameState = JSON.parse(savedState);
+                score = gameState.score || 0;
+                masteredWords = gameState.masteredWords || [];
+                decorationInventory = gameState.decorationInventory || {};
+                actionHistory = gameState.actionHistory || [];
+                
+                // Restore word list mastery counts
+                if (gameState.wordList) {
+                    gameState.wordList.forEach(savedWord => {
+                        const word = wordList.find(w => w.word === savedWord.word);
+                        if (word) {
+                            word.mastered = savedWord.mastered || 0;
+                        }
+                    });
+                }
+                
+                // Update UI
+                scoreDisplay.textContent = score;
+                mainScoreDisplay.textContent = score;
+                masteredCountDisplay.textContent = masteredWords.length;
+                updateDecorationsLibrary();
+                updateLearningProgress();
+            }
+        }
+        
+        // Shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // 暴露removeDecoration函数到全局作用域
+        window.removeDecoration = removeDecoration;
+        
+        // 初始化语音合成API
+        if ('speechSynthesis' in window) {
+            // 预加载语音列表
+            speechSynthesis.getVoices();
+            
+            // 有些浏览器需要事件来加载语音
+            speechSynthesis.onvoiceschanged = function() {
+                console.log('Voices loaded:', speechSynthesis.getVoices().length);
+            };
+        }
+    </script>
+</body>
+</html>
